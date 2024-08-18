@@ -5,9 +5,89 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      #root {
+        width: 80%;
+        margin: 40px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <h1>Welcome to Vite + React!</h1>
+      <p>Click the button to see a message!</p>
+      <button id="myButton">Click me!</button>
+      <div id="message"></div>
+      <hr />
+      <h2>Counter</h2>
+      <p>Count: <span id="count">0</span></p>
+      <button id="increment">Increment</button>
+      <button id="decrement">Decrement</button>
+      <hr />
+      <h2>To-Do List</h2>
+      <ul id="todo-list">
+        <li>Buy milk</li>
+        <li>Walk the dog</li>
+        <li>Do laundry</li>
+      </ul>
+      <input id="new-todo" type="text" placeholder="Add new todo" />
+      <button id="add-todo">Add</button>
+      <hr />
+      <h2>Weather</h2>
+      <p id="weather">Loading...</p>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      document.getElementById('myButton').addEventListener('click', () => {
+        document.getElementById('message').innerHTML = 'Hello, world!';
+      });
+
+      const countElement = document.getElementById('count');
+      const incrementButton = document.getElementById('increment');
+      const decrementButton = document.getElementById('decrement');
+
+      let count = 0;
+
+      incrementButton.addEventListener('click', () => {
+        count++;
+        countElement.textContent = count;
+      });
+
+      decrementButton.addEventListener('click', () => {
+        count--;
+        countElement.textContent = count;
+      });
+
+      const todoList = document.getElementById('todo-list');
+      const newTodoInput = document.getElementById('new-todo');
+      const addTodoButton = document.getElementById('add-todo');
+
+      addTodoButton.addEventListener('click', () => {
+        const newTodo = newTodoInput.value;
+        const newTodoElement = document.createElement('li');
+        newTodoElement.textContent = newTodo;
+        todoList.appendChild(newTodoElement);
+        newTodoInput.value = '';
+      });
+
+      const weatherElement = document.getElementById('weather');
+
+      fetch('https://api.openweathermap.org/data/2.5/weather?q=London,uk')
+        .then(response => response.json())
+        .then(data => {
+          weatherElement.textContent = `The weather in London is ${data.weather[0].description}`;
+        })
+        .catch(error => {
+          weatherElement.textContent = 'Error loading weather data';
+        });
+    </script>
   </body>
 </html>
